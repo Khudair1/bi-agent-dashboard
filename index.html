@@ -17,6 +17,7 @@
 <script>
 const SB_URL='https://zcqjmsotvmufmkrwwuex.supabase.co';
 const SB_KEY='sb_publishable_zUc8qWASE25CqAHzOHdMrQ_5JD1r9KK';
+const DASHBOARD_URL='https://khudair1.github.io/bi-agent-dashboard/';
 const sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{detectSessionInUrl:true,persistSession:true,autoRefreshToken:true}});
 const app=document.getElementById('app');
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -28,8 +29,7 @@ function login(message=''){
   document.getElementById('send').onclick=async()=>{
     const email=document.getElementById('email').value.trim();if(!email)return;
     const b=document.getElementById('send');b.disabled=true;b.textContent='Sending…';
-    const redirect=location.origin+location.pathname;
-    const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:redirect}});
+    const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:DASHBOARD_URL,shouldCreateUser:false}});
     document.getElementById('message').innerHTML=error?`<div class="msg error">${esc(error.message)}</div>`:`<div class="msg success">Login link sent. Open the email on this device.</div>`;
     b.disabled=false;b.textContent='Send login link';
   }
